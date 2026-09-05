@@ -20,6 +20,7 @@ __pycache__/
 dist/
 build/
 *.spec
+ejemplos/proyecto_generado.json
 
 # Bases de datos locales
 *.db
