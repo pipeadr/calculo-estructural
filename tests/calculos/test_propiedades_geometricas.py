@@ -6,7 +6,12 @@ import math
 
 import pytest
 
-from calculo_estructural.calculos import bounding_box_perfil, distancia_entre_puntos, perimetro_perfil
+from calculo_estructural.calculos import (
+    bounding_box_perfil,
+    contorno_perfil_ih,
+    distancia_entre_puntos,
+    perimetro_perfil,
+)
 from calculo_estructural.models import (
     PerfilCircular,
     PerfilCuadrado,
@@ -62,3 +67,29 @@ def test_perimetro_ih():
 def test_distancia_entre_puntos():
     assert distancia_entre_puntos((0, 0), (3, 4)) == pytest.approx(5.0)
     assert distancia_entre_puntos((10, 10), (10, 10)) == pytest.approx(0.0)
+
+
+def test_contorno_perfil_ih_tiene_12_vertices():
+    perfil = PerfilI(peralte_mm=300, ancho_ala_mm=150, espesor_ala_mm=12, espesor_alma_mm=8, **_ACERO)
+    contorno = contorno_perfil_ih(perfil)
+    assert len(contorno) == 12
+
+
+def test_contorno_perfil_ih_encaja_en_su_bounding_box():
+    perfil = PerfilH(peralte_mm=300, ancho_ala_mm=280, espesor_ala_mm=15, espesor_alma_mm=10, **_ACERO)
+    contorno = contorno_perfil_ih(perfil)
+    xs = [x for x, _ in contorno]
+    ys = [y for _, y in contorno]
+    ancho_x, ancho_y = bounding_box_perfil(perfil)
+    assert max(xs) - min(xs) == pytest.approx(ancho_x)
+    assert max(ys) - min(ys) == pytest.approx(ancho_y)
+
+
+def test_contorno_perfil_ih_perimetro_coincide_con_perimetro_perfil():
+    perfil = PerfilI(peralte_mm=400, ancho_ala_mm=200, espesor_ala_mm=16, espesor_alma_mm=9, **_ACERO)
+    contorno = contorno_perfil_ih(perfil)
+    n = len(contorno)
+    perimetro_por_vertices = sum(
+        distancia_entre_puntos(contorno[i], contorno[(i + 1) % n]) for i in range(n)
+    )
+    assert perimetro_por_vertices == pytest.approx(perimetro_perfil(perfil))

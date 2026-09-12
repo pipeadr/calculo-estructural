@@ -6,6 +6,13 @@ provisto explícitamente para este proyecto y cuál es solo una tolerancia
 numérica de conveniencia — y para poder ajustarlos (o exponerlos como
 configuración de usuario) en una fase futura sin tocar la lógica de las
 reglas.
+
+Nota (Etapa 3): ``calculo_estructural.models.ConfiguracionProyecto`` ya
+guarda, por proyecto, valores con estos mismos nombres y los mismos
+valores por defecto — pero todavía son independientes: las reglas de este
+paquete siguen leyendo las constantes de este módulo, no las del
+proyecto. Conectar ambos (para que cada proyecto pueda de verdad ajustar
+su propia holgura/tolerancia) queda para una fase futura.
 """
 
 from __future__ import annotations

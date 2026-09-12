@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from .base import MM_POR_PULGADA, ProyectoBaseModel, PuntoCoordenado, requerir_si
 from .cargas import Cargas
+from .configuracion_proyecto import ConfiguracionProyecto
 from .elemento_concreto import ElementoConcreto
 from .enums import (
     TipoAcero,
@@ -44,6 +45,7 @@ __all__ = [
     "TipoGradoPerno",
     "TipoSeccionPerfil",
     "TipoSoldadura",
+    "ConfiguracionProyecto",
     "PlacaBase",
     "Perforacion",
     "PerfilMetalico",

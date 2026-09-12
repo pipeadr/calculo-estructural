@@ -66,3 +66,32 @@ def distancia_entre_puntos(p1: tuple[float, float], p2: tuple[float, float]) -> 
     """Distancia euclidiana entre dos puntos (x, y), en la misma unidad
     en la que vengan expresados ambos puntos."""
     return float(np.hypot(p1[0] - p2[0], p1[1] - p2[1]))
+
+
+def contorno_perfil_ih(perfil: PerfilI | PerfilH) -> list[tuple[float, float]]:
+    """Vértices (x_mm, y_mm) del contorno exterior de un perfil I/H (12
+    lados: 2 alas + alma), centrado en su propio centroide, en sentido
+    horario empezando por la esquina superior izquierda del ala superior.
+
+    Es el mismo contorno cuyo perímetro calcula ``perimetro_perfil``; se
+    expone aparte porque el dibujo en planta necesita los vértices para
+    trazar el polígono, no solo la longitud total.
+    """
+    bf = perfil.ancho_ala_mm
+    d = perfil.peralte_mm
+    tf = perfil.espesor_ala_mm
+    tw = perfil.espesor_alma_mm
+    return [
+        (-bf / 2, d / 2),
+        (bf / 2, d / 2),
+        (bf / 2, d / 2 - tf),
+        (tw / 2, d / 2 - tf),
+        (tw / 2, -d / 2 + tf),
+        (bf / 2, -d / 2 + tf),
+        (bf / 2, -d / 2),
+        (-bf / 2, -d / 2),
+        (-bf / 2, -d / 2 + tf),
+        (-tw / 2, -d / 2 + tf),
+        (-tw / 2, d / 2 - tf),
+        (-bf / 2, d / 2 - tf),
+    ]

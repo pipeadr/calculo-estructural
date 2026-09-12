@@ -9,6 +9,7 @@ from pydantic import Field
 
 from .base import ProyectoBaseModel
 from .cargas import Cargas
+from .configuracion_proyecto import ConfiguracionProyecto
 from .elemento_concreto import ElementoConcreto
 from .perfil_metalico import PerfilMetalico
 from .pernos import Pernos
@@ -30,16 +31,19 @@ class MetadatosProyecto(ProyectoBaseModel):
 
 
 class Proyecto(ProyectoBaseModel):
-    """Proyecto completo: metadatos + las seis secciones de datos de
-    entrada de la conexión.
+    """Proyecto completo: metadatos + configuración + las seis secciones
+    de datos de entrada de la conexión.
 
-    Cada sección es opcional (``None``) hasta que el usuario la completa
-    desde su formulario correspondiente; una vez completada, todos sus
-    campos internos son obligatorios (lo garantiza el propio sub-modelo).
+    Cada sección de datos de entrada es opcional (``None``) hasta que el
+    usuario la completa desde su formulario correspondiente; una vez
+    completada, todos sus campos internos son obligatorios (lo garantiza
+    el propio sub-modelo). ``configuracion``, en cambio, nunca es
+    ``None``: siempre tiene un valor, por defecto el estándar.
     """
 
     version_formato: str = VERSION_FORMATO_ACTUAL
     metadatos: MetadatosProyecto
+    configuracion: ConfiguracionProyecto = Field(default_factory=ConfiguracionProyecto)
 
     placa_base: PlacaBase | None = None
     perfil_metalico: PerfilMetalico | None = None
